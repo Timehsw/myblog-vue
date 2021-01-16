@@ -31,17 +31,13 @@ export default {
   methods:{
     // 从这里开始后端的请求
     getUserList(id){
-      console.log(id)
-      console.log('获取列表')
       axios({
         url: 'http://127.0.0.1:9000/get-user-list',
         type: 'json',
         params:{id},
         method: 'get'
       }).then((res) => {
-        console.log(res)
         this.imglist=res.data
-        // this.menuList = res.data
       })
 
     }

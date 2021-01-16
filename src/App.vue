@@ -1,7 +1,9 @@
 <template>
   <div id="home">
+    <button>登录</button>
+    <button>注册</button>
     <div class="header">
-      <h1>网页标题</h1>
+      <h1>Time渐行渐远</h1>
       <img src="./assets/logo.png" alt=""/>
     </div>
     <div class="content">
@@ -22,10 +24,10 @@
         <p>{{ choosed_text }}</p>
         <hr/>
         <router-view/>
-
       </div>
     </div>
     <hr/>
+    <LoginBox></LoginBox>
     <div class="footer">
       Copyright © 2020 - 2021 Thinking.H
     </div>
@@ -34,8 +36,12 @@
 
 <script>
 import axios from "axios";
+import LoginBox from "@/components/LoginBox";
 
 export default {
+  components:{
+    LoginBox
+  },
   data() {
     return {
       menuList: [],
@@ -49,13 +55,11 @@ export default {
   methods: {
     // 获取分类列表
     getMenuList() {
-      console.log("开始获取分类")
       axios({
         url: 'http://127.0.0.1:9000/get-menu-list',
         type: 'json',
         method: 'get'
       }).then((res) => {
-        // console.log(res)
         this.menuList = res.data
       })
     },
