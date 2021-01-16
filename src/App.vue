@@ -1,32 +1,73 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div id="home">
+    <div class="header">
+      <h1>网页标题</h1>
+      <img src="./assets/logo.png" alt=""/>
     </div>
-    <router-view/>
+    <div class="content">
+      <div class="menu">
+
+        <div v-for="item in menuList" :key="item.id" class="item">
+          <div v-if="item.id==choosed" style="background: #777;color: #fff">
+            <a style="color:#fff">{{ item.text }}</a>
+          </div>
+          <div v-else @click="chooseMenu(item.id)">
+            <a style="color:#000">{{ item.text }}</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="userlist">
+        <p>{{ choosed_text }}</p>
+        <hr/>
+        <router-view/>
+
+      </div>
+    </div>
+    <hr/>
+    <div class="footer">
+      Copyright © 2020 - 2021 Thinking.H
+    </div>
   </div>
 </template>
 
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      menuList: [],
+      choosed: 1,
+      choosed_text: 'Django后端'
+    }
+  },
+  mounted() {
+    this.getMenuList()
+  },
+  methods: {
+    // 获取分类列表
+    getMenuList() {
+      console.log("开始获取分类")
+      axios({
+        url: 'http://127.0.0.1:9000/get-menu-list',
+        type: 'json',
+        method: 'get'
+      }).then((res) => {
+        // console.log(res)
+        this.menuList = res.data
+      })
+    },
+    chooseMenu(id) {
+      // console.log(id)
+      this.choosed = id
+      this.choosed_text = this.menuList[id - 1].text
+      // 进行传参跳转
+      this.$router.push({path:'/',query:{'menuId':id}})
+    }
+  }
+}
+</script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

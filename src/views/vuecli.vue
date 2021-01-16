@@ -1,15 +1,13 @@
 <template>
-  <div>
-
-  </div>
+<div></div>
 </template>
 
 <script>
 export default {
-  name: 'Home'
+  name: "vuecli"
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
