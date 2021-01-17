@@ -1,10 +1,14 @@
 <template>
   <div id="home">
-    <button>登录</button>
-    <button>注册</button>
+    <div>
+      <button v-if="loginType==false" @click="showLoginRegisterBox(1)">登录</button>
+      <button v-if="loginType==false" @click="showLoginRegisterBox(2)">注册</button>
+      <button v-if="loginType">个人中心</button>
+      <button v-if="loginType" @click="showLoginRegisterBox(3)">修改</button>
+    </div>
     <div class="header">
-      <h1>Time渐行渐远</h1>
-      <img src="./assets/logo.png" alt=""/>
+      <h1>{{ siteinfo.sitename }}</h1>
+      <img :src="siteinfo.logo" alt=""/>
     </div>
     <div class="content">
       <div class="menu">
@@ -27,7 +31,7 @@
       </div>
     </div>
     <hr/>
-    <LoginBox></LoginBox>
+    <LoginBox v-if="boxtarget" :target="boxtarget" @hideBox="hideLoginRegisterBox"></LoginBox>
     <div class="footer">
       Copyright © 2020 - 2021 Thinking.H
     </div>
@@ -39,18 +43,29 @@ import axios from "axios";
 import LoginBox from "@/components/LoginBox";
 
 export default {
-  components:{
+  components: {
     LoginBox
   },
   data() {
     return {
       menuList: [],
       choosed: 1,
-      choosed_text: 'Django后端'
+      choosed_text: 'Django后端',
+      boxtarget: 0,
+      siteinfo: {},
+      loginType: false
     }
   },
   mounted() {
-    this.getMenuList()
+
+    try {
+      if (window.localStorage.getItem('token').length > 0) {
+        this.loginType = true
+      }
+    } catch (e) {
+      console.log(e)
+    }
+    this.getMenuList();
   },
   methods: {
     // 获取分类列表
@@ -60,7 +75,8 @@ export default {
         type: 'json',
         method: 'get'
       }).then((res) => {
-        this.menuList = res.data
+        this.menuList = res.data.menu_data
+        this.siteinfo = res.data.site_info
       })
     },
     chooseMenu(id) {
@@ -68,7 +84,15 @@ export default {
       this.choosed = id
       this.choosed_text = this.menuList[id - 1].text
       // 进行传参跳转
-      this.$router.push({path:'/',query:{'menuId':id}})
+      this.$router.push({path: '/', query: {'menuId': id}})
+    },
+    // 展示登录注册框体
+    showLoginRegisterBox(value) {
+      this.boxtarget = value
+    },
+    // 隐藏父组件
+    hideLoginRegisterBox() {
+      this.boxtarget = 0
     }
   }
 }
