@@ -148,9 +148,14 @@ export default {
             default:
               console.log(res.data.token)
               //  将token存储在本地缓存
-              window.localStorage.setItem('token', res.data.token)
+              // window.localStorage.setItem('token', res.data.token)
               alert('登录成功')
-              window.location.reload()
+                var userinfo = res.data.userinfo
+              //  在vuex中存储用户信息
+              this.$store.commit('editUserInfo',userinfo)
+              if (this.$route.path != '/userinfo') {
+                this.$router.push({path: '/userinfo'})
+              }
           }
 
 

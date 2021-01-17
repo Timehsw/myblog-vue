@@ -3,7 +3,8 @@
     <div>
       <button v-if="loginType==false" @click="showLoginRegisterBox(1)">登录</button>
       <button v-if="loginType==false" @click="showLoginRegisterBox(2)">注册</button>
-      <button v-if="loginType">个人中心</button>
+      <button v-if="loginType" @click="toHome">首页</button>
+      <button v-if="loginType" @click="toUserInfo">个人中心</button>
       <button v-if="loginType" @click="showLoginRegisterBox(3)">修改</button>
     </div>
     <div class="header">
@@ -68,6 +69,12 @@ export default {
     this.getMenuList();
   },
   methods: {
+    toUserInfo(){
+      this.$router.push({path:'/userinfo'})
+    },
+    toHome(){
+      this.$router.push({path:'/'})
+    },
     // 获取分类列表
     getMenuList() {
       axios({
