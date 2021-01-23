@@ -28,7 +28,7 @@
       <div class="userlist">
         <p>{{ choosed_text }}</p>
         <hr/>
-        <router-view/>
+        <router-view @hideBox="hideLoginRegisterBox" @changeUI="changeLoginType"/>
       </div>
     </div>
     <hr/>

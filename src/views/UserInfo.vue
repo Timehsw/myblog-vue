@@ -17,12 +17,17 @@ export default {
   },
   mounted() {
     this.getUserInfo()
+    this.changeLoginType()
   },
   methods:{
     getUserInfo(){
       console.log("开始获取用户信息")
       // 从vuex中获取存储的全局内容
       this.userinfo = this.$store.state.userinfo
+    },
+    changeLoginType(){
+      this.$emit('changeUI',true)
+      this.$emit('hideBox')
     }
   }
 }
